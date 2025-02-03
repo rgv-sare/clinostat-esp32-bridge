@@ -1,66 +1,64 @@
-# Clinostat ESP32 RPM Monitor
+# 🛠️ Clinostat ESP32 Communication System
 
-This project consists of two ESP32-based components that communicate using ESP-NOW to monitor and transmit RPM data from a clinostat's motors.
+A bi-directional communication system between two ESP32 devices using ESP-NOW protocol, designed for clinostat motor control.
 
-## Components
+## 🔄 System Overview
 
-### Sender (Clinostat)
-- Connected to the clinostat's motors
-- Reads and transmits RPM data using ESP-NOW
-- Status LED indicator:
-  - Green: Sending data (0.8s)
-  - Red: Idle state (0.2s)
-  - Yellow: Error state (1s)
+### 📡 Sender (Clinostat Controller)
+- 📊 Broadcasts current RPM values every second
+- 📥 Accepts commands to change RPM values
+- 💻 Command format: `SET RPM1=<value> ; RPM2=<value>`
+- 💡 LED indicators:
+  - 🔵 Blue flash: Broadcasting RPM values
+  - 🟢 Green flash: Received valid command
+  - ⚫ Off: Idle state
 
-### Receiver
-- USB-connected to computer
-- Receives and displays RPM data
-- Status LED indicator:
-  - Blue flash: Data received
-  - Off: Waiting for data
+### 🔌 Receiver (USB Bridge)
+- 🖥️ Connects to computer via UART (115200 baud)
+- 📤 Forwards RPM data to computer
+- 📡 Relays commands from computer to sender
+- 💡 LED indicators:
+  - 🔵 Blue flash: Received RPM data
+  - 🟢 Green flash: Valid command sent
+  - 🔴 Red flash: Invalid command received
+  - ⚫ Off: Idle state
 
-## Hardware Requirements
+## 🔧 Hardware Setup
 
-- 2x ESP32 microcontrollers
-- 2x WS2812 NeoPixel LEDs (GPIO 21)
-- Clinostat with dual motors
-- USB cable for receiver connection
+- 2️⃣ ESP32 microcontrollers
+- 2️⃣ WS2812 NeoPixel LEDs on GPIO 21
+- 🔌 USB connection for receiver
+- 📍 UART pins: TX(8), RX(9)
 
-## Installation
+## 📡 Communication Protocol
 
-1. Flash MicroPython to both ESP32s
-2. Upload files to each device:
-   - Sender: `/clinostat/code.py`
-   - Receiver: `/receiver/code.py` and `/receiver/boot.py`
-3. Power up both devices
-4. Connect receiver to computer via USB
-5. Monitor serial output (115200 baud)
-
-## Data Format
-
+### 📊 RPM Broadcast Format
 ```
-RPM1: <0-255> ; RPM2: <0-255>
+RPM1: <value> ; RPM2: <value>
 ```
 
-## LED Color Guide
+### ⌨️ Command Format
+```
+SET RPM1=<value> ; RPM2=<value>
+```
+Values must be integers between 0-255
 
-Sender:
-- 🟢 Green: Active transmission
-- 🔴 Red: Idle/waiting
-- 🟡 Yellow: Error state
-
-Receiver:
-- 🔵 Blue: Data received
-- ⚫ Off: Standby
-
-## File Structure
+## 📁 File Structure
 
 ```
 clinostat-esp32/
 ├── clinostat/
-│   └── code.py      # Sender code
+│   └── code.py      # 📡 Sender implementation
 ├── receiver/
-│   ├── code.py      # Receiver code
-│   └── boot.py      # Boot script
-└── README.md        # This file
+│   ├── boot.py      # 🔄 Startup script
+│   └── code.py      # 🔌 Receiver/bridge implementation
+└── README.md        # 📖 Documentation
 ```
+
+## 🚀 Installation
+
+1. ⚡ Flash MicroPython to both ESP32s
+2. 📤 Upload the corresponding code files
+3. 🔌 Connect receiver ESP32 to computer via USB
+4. ⚡ Power up sender ESP32
+5. 🖥️ Monitor/send commands via serial terminal at 115200 baud
