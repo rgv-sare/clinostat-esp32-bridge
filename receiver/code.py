@@ -18,7 +18,7 @@ def set_led(color):
 # ----------------------------
 # UART Setup
 # ----------------------------
-uart = machine.UART(1, baudrate=115200, tx=machine.Pin(8), rx=machine.Pin(9))
+uart = machine.UART(0, baudrate=115200)
 
 # ----------------------------
 # Wi-Fi + ESP-NOW Setup
