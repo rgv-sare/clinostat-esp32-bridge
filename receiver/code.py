@@ -76,7 +76,7 @@ def main():
             try:
                 peer, msg = esp.recv(0)  # 0 = non-blocking
                 if msg:
-                    print("Received from ESP-NOW:", msg.decode('utf-8'))
+                    print(msg.decode('utf-8'))
                     set_led((0, 0, 255))  # Blue = received
                     time.sleep(0.1)
                     set_led((0, 0, 0))
